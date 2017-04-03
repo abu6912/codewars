@@ -14,4 +14,5 @@ def find_missing_letter(chars):
                 return letter_list[index]
         index += 1
 
-print find_missing_letter(chars)
+if __name__ == '__main__':
+    print find_missing_letter(chars)

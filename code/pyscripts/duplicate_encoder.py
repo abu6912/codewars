@@ -10,4 +10,5 @@ def duplicate_encode(word):
             out += '('
     return out
 
-print duplicate_encode(word)
+if __name__ == '__main__':
+    print duplicate_encode(word)
