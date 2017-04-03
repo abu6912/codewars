@@ -13,6 +13,13 @@ def sortstring(string):
             letter_dict[letter] = letter_list.count(letter)
     return letter_dict
 
+def string_dict(string, count, letter, s):
+    if count in string.keys():
+        string[count].append(s+':'+count*letter)
+    else:
+        string[count] = [s+':'+count*letter]
+    return string
+
 def mix(s1, s2):
     s1 = sortstring(s1)
     s2 = sortstring(s2)
@@ -21,33 +28,33 @@ def mix(s1, s2):
     all_let.extend(s2.keys())
     all_let = list(set(all_let))
     all_let.sort()
-    string = []
+    string = {}
     for letter in all_let:
         if letter in s1.keys() and letter in s2.keys():
-            if s1[letter] == s2[letter]:
-                string.append('=:'+ s1[letter]*letter)
-            elif s1[letter] > s2[letter]:
-                string.append('1:'+ s1[letter]*letter)
-            elif s1[letter] < s2[letter]:
-                string.append('2:'+ s2[letter]*letter)
-        else:
-            if letter in s1.keys():
-                string.append('1:'+ s1[letter]*letter)
-            elif letter in s2.keys():
-                string.append('2:'+ s2[letter]*letter)
-    # string.sort()
-    let_dict = {}
-    for letter in all_let:
-        if s1[letter] == s2[letter]:
-            let_dict[letter] = ['=:', s1[letter]]
-        elif s1[letter] < s2[letter]:
-            let_dict[letter] = ['2:', s2[letter]]
-        elif s1[letter] > s2[letter]:
-            let_dict[letter] = ['1:', s1[letter]]
-
-    str_len = [len(_str) for _str in string]
-    
-    return string
+            if s1[letter]==s2[letter]:
+                string = string_dict(string, s1[letter], letter, '=')
+            elif s1[letter]>s2[letter]:
+                string = string_dict(string, s1[letter], letter, '1')
+            elif s1[letter]<s2[letter]:
+                string = string_dict(string, s2[letter], letter, '2')
+        elif letter in s1.keys():
+            string = string_dict(string, s1[letter], letter, '1')
+        elif letter in s2.keys():
+            string = string_dict(string, s2[letter], letter, '2')
+    count_keys = string.keys()
+    count_keys.sort(reverse = True)
+    out = []
+    for count in count_keys:
+        data = string[count]
+        data.sort()
+        out.extend(data)
+    return '/'.join(out)
 
 if __name__ == '__main__':
     print mix(s1, s2)
+
+    s1 = "mmmmm m nnnnn y&friend&Paul has heavy hats! &"
+    s2 = "my frie n d Joh n has ma n y ma n y frie n ds n&"
+    print mix(s1, s2)
+
+
